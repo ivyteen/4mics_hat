@@ -52,9 +52,9 @@ class Pixels:
     def speak(self):
         self.put(self.pattern.speak)
 
-    def dont_understand(self, error_num=0):
+    def error_indicator(self, error_num=0):
         def f():
-            self.pattern.dont_understand(error_num)
+            self.pattern.error_indicator(error_num)
 
         self.put(f)
         
@@ -125,14 +125,14 @@ def main():
         except sr.UnknownValueError:
             print("Google Speech Recognition could not understand audio")
             pixels.off()
-            pixels.dont_understand()
+            pixels.error_indicator()
             time.sleep(3)
         except sr.RequestError as e:
             print("Could not request results from Google Speech Recognition service; {0}".format(e))        
         except ValueError:
             print("Color name unavailable")
             pixels.off()
-            pixels.dont_understand()
+            pixels.error_indicator()
             time.sleep(3)
         except KeyboardInterrupt:
             break

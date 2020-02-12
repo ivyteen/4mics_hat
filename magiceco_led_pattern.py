@@ -9,6 +9,12 @@ except ImportError:
 
 class MagicEcoLedPattern(object):
 
+    ERROR_NUM_DISK_CONNECT=1
+    ERROR_NUM_DISK_MOUNT=2
+    ERROR_NUM_DISK_FILE=3
+    ERROR_NUM_NET=4
+    ERROR_NUM_DONT_UNDERSTAND=5
+
     def __init__(self, show=None, show_odd_pixel=None):
         self.color_data = numpy.array([0]*4*12)
 
@@ -122,8 +128,17 @@ class MagicEcoLedPattern(object):
         print("color value ",red,green,blue)
 
 
-    def dont_understand(self, error_num=0):
-        self.show_odd_pixel(0xFF,0,0)
+    def error_indicator(self, error_num=ERROR_NUM_DONT_UNDERSTAND):
+        if error_num == self.ERROR_NUM_DISK_CONNECT:
+            self.show_odd_pixel(0xFF,0,0) #RED
+        elif error_num == self.ERROR_NUM_DISK_MOUNT:
+            self.show_odd_pixel(0xF5,0x82,0x31) #Orange
+        elif error_num == self.ERROR_NUM_DISK_FILE:
+            self.show_odd_pixel(0xFF,0xe1,0x19) #Yellow
+        elif error_num == self.ERROR_NUM_NET:
+            self.show_odd_pixel(0x0,0x0,0xFF) #Blue
+        else: #Don't Understand
+            self.show_odd_pixel(0xFF,0xFF,0xFF) #White
 
     def action(self, color="white"):
         self.set_color(color)
